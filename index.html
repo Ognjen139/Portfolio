@@ -15,6 +15,8 @@
       --header-bg: rgba(0,0,0,0.6);
       --glass: rgba(255,255,255,0.03);
       --max-mobile-menu-height: 320px;
+      --muted: rgba(255,255,255,0.85);
+      --card-bg: rgba(0,0,0,0.45);
     }
 
     /* Reset & base */
@@ -193,54 +195,229 @@
       position:relative;
       z-index:1;
     }
+
+    /* NEW: enhanced hero */
     .hero{
-      display:flex;
-      align-items:center;
+      display:grid;
+      grid-template-columns: 1fr 360px;
       gap:28px;
+      align-items:center;
       justify-content:center;
-      flex-wrap:wrap;
-      text-align:center;
+      text-align:left;
       padding:36px;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border-radius:12px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.5);
       border: 1px solid rgba(255,255,255,0.03);
+      position:relative;
+      overflow:visible;
     }
-    .hero .text{
-      max-width:720px;
+
+    /* floating decorative blobs (kept subtle so background still visible) */
+    .hero::after,
+    .hero::before{
+      content:"";
+      position:absolute;
+      pointer-events:none;
+      border-radius:50%;
+      filter: blur(36px);
+      opacity:0.09;
+      z-index:0;
     }
-    .hero h1{
-      font-size:36px;
-      margin-bottom:6px;
+    .hero::before{
+      width:340px;
+      height:340px;
+      right: -80px;
+      top: -80px;
+      background: linear-gradient(120deg, rgba(251,254,13,0.95), rgba(255,255,255,0.06));
+      transform: rotate(18deg);
+      animation: floatSlow 9s ease-in-out infinite;
+    }
+    .hero::after{
+      width:220px;
+      height:220px;
+      left:-60px;
+      bottom:-40px;
+      background: linear-gradient(60deg, rgba(255,255,255,0.03), rgba(251,254,13,0.65));
+      animation: floatSlow 11s ease-in-out infinite reverse;
+    }
+    @keyframes floatSlow{
+      0%{ transform: translateY(0) rotate(0deg); }
+      50%{ transform: translateY(-18px) rotate(6deg); }
+      100%{ transform: translateY(0) rotate(0deg); }
+    }
+
+    .hero .left{
+      position:relative;
+      z-index:1;
+    }
+    .hero .right{
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* Big code-style name */
+    .code-name{
+      display:block;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-weight:700;
+      font-size:42px;
       color:var(--primary);
+      line-height:1;
+      letter-spacing:-0.4px;
+      margin-bottom:6px;
+      white-space:nowrap;
     }
-    .hero h2{
-      font-size:20px;
-      font-weight:400;
-      margin-bottom:12px;
-      color:#fff;
+    .code-name .angle{
+      opacity:0.9;
+      color:var(--primary);
+      font-weight:700;
+    }
+    .code-name .main{
+      display:inline-block;
+      background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03));
+      padding:6px 10px;
+      border-radius:8px;
+      margin-left:8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.02);
+      font-size:36px;
+    }
+
+    /* Small sub-title typed */
+    .typed-line{
+      display:block;
+      font-size:18px;
+      color: #fff;
       opacity:0.95;
+      margin-top:8px;
+      min-height:28px;
+      font-weight:500;
+      letter-spacing:0.2px;
     }
+    .typed-line .cursor{
+      display:inline-block;
+      width:10px;
+      height:22px;
+      background:var(--primary);
+      margin-left:8px;
+      vertical-align:middle;
+      animation: blink 1s steps(2,start) infinite;
+      border-radius:3px;
+    }
+    @keyframes blink { 50% { opacity: 0 } }
+
     .hero p{
       color:#fff;
       opacity:0.9;
       font-size:16px;
       margin:16px 0 8px;
+      max-width:68ch;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+      flex-wrap:wrap;
     }
     .btn{
       display:inline-block;
-      margin-top:12px;
-      padding:12px 20px;
+      padding:12px 18px;
       background:var(--primary);
       color:#111;
       text-decoration:none;
       font-weight:700;
       border-radius:8px;
-      transition:transform .12s ease;
+      transition:transform .12s ease, box-shadow .12s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
     }
-    .btn:hover{ transform:translateY(-3px) }
+    .btn.secondary{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      font-weight:600;
+    }
+    .btn:hover{ transform:translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.6) }
+
+    /* Tech badges */
+    .tech-badges{
+      display:flex;
+      gap:10px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .tech{
+      background: rgba(255,255,255,0.03);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--primary);
+      border:1px solid rgba(255,255,255,0.03);
+      font-weight:600;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+      transform: translateY(0);
+      transition: transform .3s cubic-bezier(.2,.9,.2,1), opacity .24s;
+    }
+    .tech:hover{ transform: translateY(-6px) scale(1.03) }
+
+    /* Right column: faux code card */
+    .code-card{
+      width:100%;
+      max-width:340px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(255,255,255,0.02));
+      border-radius:12px;
+      padding:18px;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.6);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      color: #dfe6f2;
+      position:relative;
+      z-index:3;
+    }
+    .code-card .line{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      padding:4px 0;
+      opacity:0.95;
+    }
+    .code-card .ln{
+      min-width:26px;
+      color: rgba(255,255,255,0.18);
+      text-align:right;
+      font-size:12px;
+      user-select:none;
+    }
+    .code-card .code{
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .tag-g{
+      color: #9be7ff;
+    }
+    .tag-y{ color:#ffd36b }
+    .tag-p{ color:#ffb3ff }
+
+    /* subtle entrance */
+    .reveal{
+      transform: translateY(10px);
+      opacity:0;
+      transition: all .6s cubic-bezier(.2,.9,.2,1);
+    }
+    .reveal.visible{
+      transform: translateY(0);
+      opacity:1;
+    }
 
     /* Responsive */
+    @media (max-width: 1100px){
+      .hero{ grid-template-columns: 1fr 320px; }
+    }
     @media (max-width: 880px){
       .header-inner{ padding:10px 16px }
     }
@@ -248,14 +425,17 @@
       nav.primary-nav{ display:none }
       .hamburger{ display:flex }
       .container{ margin:28px auto 40px }
-      .hero{ padding:20px }
-      .hero h1{ font-size:28px }
+      .hero{ padding:20px; grid-template-columns:1fr; text-align:center }
+      .hero .right{ order:-1; margin-bottom:12px }
+      .code-name{ font-size:28px }
+      .code-name .main{ font-size:22px; margin-left:6px }
       .profile-pic{ width:56px;height:84px }
     }
 
     @media (max-width:420px){
       .hero h1{ font-size:22px }
       .hero h2{ font-size:16px }
+      .code-card{ max-width:100% }
     }
   </style>
 </head>
@@ -302,35 +482,63 @@
 
   <!-- Main content -->
   <main class="container" role="main">
+    <!-- ENHANCED HERO: only this section changed -->
     <section class="hero" aria-label="Intro">
-      <div class="text">
-        <h1>Ognjen Mičić</h1>
-        <h2>Full-Stack Developer & WordPress Specialist</h2>
-        <p>I specialize in website development, online stores, SEO optimization, e-commerce projects, and web applications.</p>
-        <a class="btn" href="contact.html">Contact Me</a>
+      <div class="left">
+        <span class="code-name reveal" id="codename">
+          <span class="angle">&lt;</span>
+          <span class="main">&lt;ognjen/&gt;</span>
+        </span>
+
+        <div class="typed-line reveal" id="typed" aria-live="polite">
+          <span id="typedText">Full-Stack Developer</span><span class="cursor" aria-hidden="true"></span>
+        </div>
+
+        <p class="reveal">I build fast, accessible websites, shop platforms and web apps — mostly with WordPress, custom PHP and modern JS. I help small teams and businesses ship production-ready products with focus on performance and UX.</p>
+
+        <div class="actions reveal" role="group" aria-label="Primary actions">
+          <a class="btn" href="contact.html">Contact Me</a>
+          <a class="btn secondary" href="projects.html">See Projects</a>
+        </div>
+
+        <div class="tech-badges reveal" aria-hidden="false">
+          <span class="tech">WordPress</span>
+          <span class="tech">WooCommerce</span>
+          <span class="tech">HTML/CSS</span>
+          <span class="tech">JavaScript</span>
+          <span class="tech">PHP</span>
+        </div>
       </div>
+
+      <!-- faux code preview on the right -->
+      <aside class="right reveal" aria-hidden="false">
+        <div class="code-card" role="region" aria-label="Quick code preview">
+          <div class="line"><div class="ln">1</div><div class="code tag-g">&lt;header&gt;</div></div>
+          <div class="line"><div class="ln">2</div><div class="code">  &lt;h1&gt;Ognjen Mičić&lt;/h1&gt;</div></div>
+          <div class="line"><div class="ln">3</div><div class="code tag-y">  &lt;role&gt;Full-Stack Developer&lt;/role&gt;</div></div>
+          <div class="line"><div class="ln">4</div><div class="code">  &lt;tech&gt;WordPress · PHP · JS&lt;/tech&gt;</div></div>
+          <div class="line"><div class="ln">5</div><div class="code tag-p">  &lt;projects href="projects.html"&gt;View Projects&lt;/projects&gt;</div></div>
+          <div class="line"><div class="ln">6</div><div class="code tag-g">&lt;/header&gt;</div></div>
+        </div>
+      </aside>
     </section>
   </main>
 
   <script>
     (function(){
+      // mobile menu toggle (unchanged)
       const hamburger = document.getElementById('hamburger');
       const mobileMenu = document.getElementById('mobileMenu');
 
       function toggleMenu(){
         const isOpen = hamburger.classList.toggle('active');
         mobileMenu.classList.toggle('open', isOpen);
-        // accessibility attributes
         hamburger.setAttribute('aria-expanded', String(isOpen));
         mobileMenu.setAttribute('aria-hidden', String(!isOpen));
       }
-
       hamburger.addEventListener('click', toggleMenu);
-
-      // Close menu when clicking a link (mobile)
       mobileMenu.addEventListener('click', function(e){
         if(e.target.tagName === 'A'){
-          // small delay for click feedback before closing
           setTimeout(() => {
             hamburger.classList.remove('active');
             mobileMenu.classList.remove('open');
@@ -339,8 +547,6 @@
           }, 80);
         }
       });
-
-      // Close mobile menu on resize to desktop
       window.addEventListener('resize', function(){
         if(window.innerWidth > 768){
           hamburger.classList.remove('active');
@@ -349,8 +555,6 @@
           mobileMenu.setAttribute('aria-hidden','true');
         }
       });
-
-      // Close on Escape
       window.addEventListener('keydown', function(e){
         if(e.key === 'Escape'){
           hamburger.classList.remove('active');
@@ -359,6 +563,62 @@
           mobileMenu.setAttribute('aria-hidden','true');
         }
       });
+
+      // Typing/rotating roles
+      const roles = [
+        "Full-Stack Developer",
+        "WordPress & E-commerce Specialist",
+        "Performance & SEO-focused",
+        "Custom PHP & JS",
+      ];
+      let roleIndex = 0;
+      let charIndex = 0;
+      const typedTextEl = document.getElementById('typedText');
+      const cursor = document.querySelector('.typed-line .cursor');
+
+      function typeRole(){
+        const current = roles[roleIndex];
+        if(charIndex <= current.length){
+          typedTextEl.textContent = current.slice(0, charIndex);
+          charIndex++;
+          setTimeout(typeRole, 38);
+        } else {
+          // pause, then delete
+          setTimeout(() => { deleteRole(); }, 900);
+        }
+      }
+      function deleteRole(){
+        const current = roles[roleIndex];
+        if(charIndex >= 0){
+          typedTextEl.textContent = current.slice(0, charIndex);
+          charIndex--;
+          setTimeout(deleteRole, 28);
+        } else {
+          roleIndex = (roleIndex + 1) % roles.length;
+          setTimeout(() => { charIndex = 0; typeRole(); }, 220);
+        }
+      }
+      // start after small delay
+      setTimeout(typeRole, 600);
+
+      // reveal animations when in view
+      const reveals = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if(e.isIntersecting){
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      reveals.forEach(r => obs.observe(r));
+
+      // accessible focus: if user prefers reduced motion, stop animations
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        // disable cursor blink
+        if(cursor) cursor.style.animation = 'none';
+      }
     })();
   </script>
 </body>
