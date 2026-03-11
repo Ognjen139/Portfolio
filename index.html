@@ -196,7 +196,7 @@
       z-index:1;
     }
 
-    /* NEW: enhanced hero */
+    /* ENHANCED HERO: desktop layout */
     .hero{
       display:grid;
       grid-template-columns: 1fr 360px;
@@ -414,28 +414,79 @@
       opacity:1;
     }
 
-    /* Responsive */
+    /* === RESPONSIVE ADJUSTMENTS === */
     @media (max-width: 1100px){
       .hero{ grid-template-columns: 1fr 320px; }
     }
+
+    /* tablet-ish */
     @media (max-width: 880px){
       .header-inner{ padding:10px 16px }
     }
+
+    /* main mobile breakpoint: stack and shrink */
     @media (max-width: 768px){
       nav.primary-nav{ display:none }
       .hamburger{ display:flex }
-      .container{ margin:28px auto 40px }
-      .hero{ padding:20px; grid-template-columns:1fr; text-align:center }
-      .hero .right{ order:-1; margin-bottom:12px }
-      .code-name{ font-size:28px }
-      .code-name .main{ font-size:22px; margin-left:6px }
+      .container{ margin:28px auto 40px; padding:0 14px }
+      .hero{
+        padding:18px;
+        grid-template-columns:1fr;
+        text-align:center;
+        gap:14px;
+      }
+      .hero .right{ order:-1; margin-bottom:8px }
+      .hero::before, .hero::after{
+        /* reduce visual noise on mobile */
+        display:none;
+      }
+      .code-card{
+        max-width:420px;
+        width:92%;
+        padding:12px;
+        transform: none;
+        margin:0 auto;
+      }
+      .code-name{ font-size:28px; white-space:normal }
+      .code-name .main{ font-size:22px; margin-left:6px; padding:5px 8px }
+      .typed-line{ font-size:16px }
       .profile-pic{ width:56px;height:84px }
+      .actions{ justify-content:center }
+    }
+
+    /* smaller phones: make everything tighter */
+    @media (max-width: 480px){
+      .container{ margin:18px auto; padding:0 12px }
+      .hero{ padding:14px; border-radius:10px }
+      .code-name{ font-size:24px }
+      .code-name .main{ font-size:18px; padding:4px 7px }
+      .typed-line{ font-size:15px }
+      .hero p{ font-size:15px; margin:12px 0 }
+      .actions{ gap:10px; flex-direction:column }
+      .btn{ width:100%; box-sizing:border-box; padding:12px }
+      .tech-badges{ justify-content:center }
+      .code-card{ width:94%; padding:10px; font-size:13px }
+    }
+
+    /* very small phones: hide right panel completely to maximize space */
+    @media (max-width: 360px){
+      .hero .right{ display:none }
+      .code-name{ font-size:20px }
+      .code-name .main{ font-size:16px }
+      .typed-line .cursor{ display:none } /* save space */
     }
 
     @media (max-width:420px){
       .hero h1{ font-size:22px }
       .hero h2{ font-size:16px }
       .code-card{ max-width:100% }
+    }
+
+    /* accessibility */
+    @media (prefers-reduced-motion: reduce){
+      .hero::before, .hero::after { animation: none !important; }
+      .typed-line .cursor { animation: none !important; }
+      .reveal { transition: none !important; transform: none !important; opacity: 1 !important; }
     }
   </style>
 </head>
@@ -485,7 +536,7 @@
     <!-- ENHANCED HERO: only this section changed -->
     <section class="hero" aria-label="Intro">
       <div class="left">
-        <span class="code-name reveal" id="codename">
+        <span class="code-name reveal" id="codename" aria-hidden="false">
           <span class="angle">&lt;</span>
           <span class="main">&lt;ognjen/&gt;</span>
         </span>
@@ -616,7 +667,6 @@
       // accessible focus: if user prefers reduced motion, stop animations
       const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
       if(mq.matches){
-        // disable cursor blink
         if(cursor) cursor.style.animation = 'none';
       }
     })();
